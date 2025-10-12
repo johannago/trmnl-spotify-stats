@@ -1,0 +1,24 @@
+{
+  "name": "trmnl-spotify-stats",
+  "version": "1.0.0",
+  "description": "Backend server to fetch Spotify statistics for TRMNL private plugin",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["trmnl", "spotify", "e-ink"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
