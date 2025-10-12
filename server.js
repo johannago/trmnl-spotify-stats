@@ -12,8 +12,8 @@ let tokenExpiresAt = 0;
 /**
  * Refresh Spotify access token using the refresh token
  */
-async function getSpotifyAccessToken() {
-  // Return cached token if still valid
+async function getSpotifyAccessToken(clientId, clientSecret, refreshToken) {
+  // Return cached token if still valid (and credentials match)
   if (accessToken && Date.now() < tokenExpiresAt) {
     return accessToken;
   }
@@ -23,13 +23,13 @@ async function getSpotifyAccessToken() {
       'https://accounts.spotify.com/api/token',
       new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: process.env.SPOTIFY_REFRESH_TOKEN,
+        refresh_token: refreshToken,
       }),
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Basic ' + Buffer.from(
-            process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
+            clientId + ':' + clientSecret
           ).toString('base64'),
         },
       }
@@ -48,8 +48,8 @@ async function getSpotifyAccessToken() {
 /**
  * Fetch user's top artists from Spotify
  */
-async function getTopArtists(timeRange = 'medium_term', limit = 5) {
-  const token = await getSpotifyAccessToken();
+async function getTopArtists(clientId, clientSecret, refreshToken, timeRange = 'medium_term', limit = 5) {
+  const token = await getSpotifyAccessToken(clientId, clientSecret, refreshToken);
 
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/top/artists', {
@@ -77,8 +77,8 @@ async function getTopArtists(timeRange = 'medium_term', limit = 5) {
 /**
  * Fetch user's top tracks from Spotify
  */
-async function getTopTracks(timeRange = 'medium_term', limit = 5) {
-  const token = await getSpotifyAccessToken();
+async function getTopTracks(clientId, clientSecret, refreshToken, timeRange = 'medium_term', limit = 5) {
+  const token = await getSpotifyAccessToken(clientId, clientSecret, refreshToken);
 
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/top/tracks', {
@@ -107,8 +107,8 @@ async function getTopTracks(timeRange = 'medium_term', limit = 5) {
 /**
  * Fetch recently played tracks
  */
-async function getRecentlyPlayed(limit = 5) {
-  const token = await getSpotifyAccessToken();
+async function getRecentlyPlayed(clientId, clientSecret, refreshToken, limit = 5) {
+  const token = await getSpotifyAccessToken(clientId, clientSecret, refreshToken);
 
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/player/recently-played', {
@@ -140,8 +140,8 @@ async function getRecentlyPlayed(limit = 5) {
 /**
  * Fetch currently playing track
  */
-async function getCurrentlyPlaying() {
-  const token = await getSpotifyAccessToken();
+async function getCurrentlyPlaying(clientId, clientSecret, refreshToken) {
+  const token = await getSpotifyAccessToken(clientId, clientSecret, refreshToken);
 
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -174,15 +174,28 @@ async function getCurrentlyPlaying() {
 // Main endpoint for TRMNL polling
 app.get('/api/spotify-stats', async (req, res) => {
   try {
+    // Get credentials from query params (for TRMNL) or fallback to env vars (for local testing)
+    const clientId = req.query.client_id || process.env.SPOTIFY_CLIENT_ID;
+    const clientSecret = req.query.client_secret || process.env.SPOTIFY_CLIENT_SECRET;
+    const refreshToken = req.query.refresh_token || process.env.SPOTIFY_REFRESH_TOKEN;
+
+    // Validate credentials
+    if (!clientId || !clientSecret || !refreshToken) {
+      return res.status(400).json({
+        error: 'Missing credentials',
+        message: 'Please provide client_id, client_secret, and refresh_token'
+      });
+    }
+
     // Get time range from query params (default: medium_term)
     const timeRange = req.query.time_range || 'medium_term';
 
     // Fetch all data in parallel
     const [topArtists, topTracks, recentlyPlayed, currentlyPlaying] = await Promise.all([
-      getTopArtists(timeRange, 5),
-      getTopTracks(timeRange, 5),
-      getRecentlyPlayed(5),
-      getCurrentlyPlaying(),
+      getTopArtists(clientId, clientSecret, refreshToken, timeRange, 5),
+      getTopTracks(clientId, clientSecret, refreshToken, timeRange, 5),
+      getRecentlyPlayed(clientId, clientSecret, refreshToken, 5),
+      getCurrentlyPlaying(clientId, clientSecret, refreshToken),
     ]);
 
     // Format response for TRMNL
