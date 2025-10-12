@@ -7,7 +7,7 @@ const PORT = 8888;
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const REDIRECT_URI = `http://localhost:${PORT}/callback`;
+const REDIRECT_URI = `http://127.0.0.1:${PORT}/callback`;
 
 // Required scopes for the plugin
 const SCOPES = [
