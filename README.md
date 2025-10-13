@@ -2,6 +2,11 @@
 
 Display your Spotify listening statistics on your TRMNL e-ink display, including top artists, top tracks, recently played songs, and currently playing tracks.
 
+https://usetrmnl.com/recipes/164583
+
+<img width="946" height="941" alt="image" src="https://github.com/user-attachments/assets/a452fedf-bcb7-4e5d-a13c-b374ef4178cd" />
+
+
 ## Features
 
 - 📊 **Top Artists** - See your most listened-to artists
