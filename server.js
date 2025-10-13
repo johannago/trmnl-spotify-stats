@@ -174,21 +174,21 @@ async function getCurrentlyPlaying(clientId, clientSecret, refreshToken) {
 // Main endpoint for TRMNL polling
 app.get('/api/spotify-stats', async (req, res) => {
   try {
-    // Get credentials from query params (for TRMNL) or fallback to env vars (for local testing)
-    const clientId = req.query.client_id || process.env.SPOTIFY_CLIENT_ID;
-    const clientSecret = req.query.client_secret || process.env.SPOTIFY_CLIENT_SECRET;
-    const refreshToken = req.query.refresh_token || process.env.SPOTIFY_REFRESH_TOKEN;
+    // Get credentials from headers (preferred) or query params (fallback) or env vars (local testing)
+    const clientId = req.headers['x-spotify-client-id'] || req.query.client_id || process.env.SPOTIFY_CLIENT_ID;
+    const clientSecret = req.headers['x-spotify-client-secret'] || req.query.client_secret || process.env.SPOTIFY_CLIENT_SECRET;
+    const refreshToken = req.headers['x-spotify-refresh-token'] || req.query.refresh_token || process.env.SPOTIFY_REFRESH_TOKEN;
 
     // Validate credentials
     if (!clientId || !clientSecret || !refreshToken) {
       return res.status(400).json({
         error: 'Missing credentials',
-        message: 'Please provide client_id, client_secret, and refresh_token'
+        message: 'Please provide credentials in headers (x-spotify-client-id, x-spotify-client-secret, x-spotify-refresh-token)'
       });
     }
 
-    // Get time range from query params (default: medium_term)
-    const timeRange = req.query.time_range || 'medium_term';
+    // Get time range from headers or query params (default: medium_term)
+    const timeRange = req.headers['x-spotify-time-range'] || req.query.time_range || 'medium_term';
 
     // Fetch all data in parallel
     const [topArtists, topTracks, recentlyPlayed, currentlyPlaying] = await Promise.all([
