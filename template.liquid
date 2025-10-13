@@ -1,3 +1,9 @@
+{% if false %}
+  {{ trmnl.plugin_settings.custom_fields_values.spotify_client_id }}
+  {{ trmnl.plugin_settings.custom_fields_values.spotify_client_secret }}
+  {{ trmnl.plugin_settings.custom_fields_values.spotify_refresh_token }}
+{% endif %}
+
 <div class="layout">
   <div class="columns">
     <div class="column">
@@ -5,7 +11,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th></th>
+            <th><span class="label label--small">Rank</span></th>
             <th><span class="label label--small">Artist</span></th>
             <th><span class="label label--small">Genre</span></th>
           </tr>
@@ -13,7 +19,7 @@
         <tbody>
           {% for artist in top_artists %}
             <tr>
-              <td>{{ artist.rank }}</td>
+              <td><span class="title title--small">{{ artist.rank }}</span></td>
               <td><span class="title title--small">{{ artist.name }}</span></td>
               <td><span class="label">{{ artist.genres }}</span></td>
             </tr>
@@ -27,7 +33,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th></th>
+            <th><span class="label label--small">Rank</span></th>
             <th><span class="label label--small">Track</span></th>
             <th><span class="label label--small">Artist</span></th>
           </tr>
@@ -35,7 +41,7 @@
         <tbody>
           {% for track in top_tracks %}
             <tr>
-              <td>{{ track.rank }}</td>
+              <td><span class="title title--small">{{ track.rank }}</span></td>
               <td><span class="title title--small">{{ track.name }}</span></td>
               <td><span class="label">{{ track.artist }}</span></td>
             </tr>
@@ -49,17 +55,15 @@
       <table class="table">
         <thead>
           <tr>
-            <th></th>
-            <th><span class="label label--small">Track</span></th>
+            <th><span class="label label--small">Rank</span></th>
             <th><span class="label label--small">Artist</span></th>
           </tr>
         </thead>
         <tbody>
             {% for track in recently_played %}
             <tr>
-              <td>{{ track.rank }}</td>
               <td><span class="title title--small">{{ track.rank }}</span></td>
-              <td><span class="label">{{ track.artist }} • {{ track.played_at }}</span></td>
+              <td><span class="label">{{ track.artist }}</span> • <span class="label label--small">{{ track.played_at }}</span></td>
             </tr>
           {% endfor %}
         </tbody>
@@ -70,6 +74,6 @@
 
 <div class="title_bar">
   <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
-  <span class="title">Spotify</span>
-  <span class="instance">Synced: {{ time_range_label }}</span>
+  <span class="title">Spotify - Listening Stats</span>
+  <span class="instance">{{ time_range_label }}</span>
 </div>
