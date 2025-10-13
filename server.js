@@ -175,9 +175,9 @@ async function getCurrentlyPlaying(clientId, clientSecret, refreshToken) {
 app.get('/api/spotify-stats', async (req, res) => {
   try {
     // Get credentials from headers (preferred) or query params (fallback) or env vars (local testing)
-    const clientId = req.headers['x-spotify-client-id'] || req.query.client_id || process.env.SPOTIFY_CLIENT_ID;
-    const clientSecret = req.headers['x-spotify-client-secret'] || req.query.client_secret || process.env.SPOTIFY_CLIENT_SECRET;
-    const refreshToken = req.headers['x-spotify-refresh-token'] || req.query.refresh_token || process.env.SPOTIFY_REFRESH_TOKEN;
+    const clientId = req.headers['x-spotify-client-id'] || process.env.SPOTIFY_CLIENT_ID;
+    const clientSecret = req.headers['x-spotify-client-secret'] || process.env.SPOTIFY_CLIENT_SECRET;
+    const refreshToken = req.headers['x-spotify-refresh-token'] || process.env.SPOTIFY_REFRESH_TOKEN;
 
     // Validate credentials
     if (!clientId || !clientSecret || !refreshToken) {
