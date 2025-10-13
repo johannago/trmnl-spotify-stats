@@ -138,7 +138,7 @@ Press `Ctrl+C` to stop the server once you have your token.
 
 Returns Spotify statistics in JSON format.
 
-**Query Parameters:**
+**Pass this in the request header::**
 - `client_id` (required) - Spotify Client ID
 - `client_secret` (required) - Spotify Client Secret
 - `refresh_token` (required) - Spotify Refresh Token
