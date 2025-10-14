@@ -1,6 +1,6 @@
 # TRMNL Spotify Stats Plugin
 
-Display your Spotify listening statistics on your TRMNL e-ink display, including top artists, top tracks, recently played songs, and currently playing tracks.
+Display your Spotify listening statistics on your TRMNL e-ink display, including top artists, top tracks, and recently played songs.
 
 https://usetrmnl.com/recipes/164583
 
@@ -12,7 +12,6 @@ https://usetrmnl.com/recipes/164583
 - 📊 **Top Artists** - See your most listened-to artists
 - 🎵 **Top Tracks** - View your favorite songs
 - 🕐 **Recently Played** - Track your listening history
-- ▶️ **Now Playing** - Display what's currently playing
 - ⏱️ **Time Ranges** - Choose between Last 4 Weeks, Last 6 Months, or All Time
 
 ## Prerequisites
@@ -20,7 +19,6 @@ https://usetrmnl.com/recipes/164583
 - A Spotify account (Free or Premium)
 - A TRMNL account and device
 - Node.js installed (version 18 or higher) - for token generation only
-- A publicly accessible server to host the API (Railway, Heroku, Render, etc.)
 
 ## Setup Guide
 
@@ -41,7 +39,6 @@ https://usetrmnl.com/recipes/164583
 ### Step 2: Generate Your Refresh Token
 
 #### 2.1 Clone or Download This Repository
-
 ```bash
 git clone <your-repo-url>
 cd trmnl-spotify-stats
@@ -56,11 +53,17 @@ npm install
 #### 2.3 Configure Environment Variables
 
 Create a `.env` file in the project root:
-
+For Linux
 ```bash
 # Copy the example file
 cp .env.example .env
 ```
+For Windows
+```
+# Copy the example file
+copy .env.example .env
+```
+
 
 Edit `.env` and add your Spotify credentials:
 
@@ -72,6 +75,7 @@ SPOTIFY_REFRESH_TOKEN=your_refresh_token_here
 ```
 
 #### 2.4 Run the Token Generator
+You only need to copy and set this one time after you copy this.
 
 ```bash
 node get-refresh-token.js
@@ -109,7 +113,7 @@ Press `Ctrl+C` to stop the server once you have your token.
 - Check that your polling URL includes the `{{ }}` template variables
 - Make sure there are no extra spaces in your credentials
 
-### No Data Appearing on TRMNL
+### No Data Appearing on TRMNL (If you're self-hosting)
 
 **Problem:** The plugin is installed but shows no data.
 
@@ -128,14 +132,6 @@ Press `Ctrl+C` to stop the server once you have your token.
 - Re-run the `get-refresh-token.js` script to generate a new token
 - Update the token in your TRMNL plugin configuration
 
-### Spotify Shows "Not Currently Playing Anything"
-
-**Problem:** The "Now Playing" section is empty even when music is playing.
-
-**Solution:**
-- Make sure you're playing music on an active Spotify session
-- The plugin only shows what's currently playing on your account
-- There may be a slight delay (up to your polling interval) before it appears
 
 ## API Endpoints
 
