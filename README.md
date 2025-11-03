@@ -4,6 +4,8 @@ Display your Spotify listening statistics on your TRMNL e-ink display, including
 
 https://usetrmnl.com/recipes/164583
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z81L4M6Q)
+
 <img width="946" height="941" alt="image" src="https://github.com/user-attachments/assets/a452fedf-bcb7-4e5d-a13c-b374ef4178cd" />
 
 
