@@ -95,6 +95,12 @@ This will:
 
 Press `Ctrl+C` to stop the server once you have your token.
 
+#### 2.5 Verify that your credentials and refresh token are working
+I'm currently hosting it using the free version on Render, if you're self-hosting then update the url below:
+```
+curl -X GET "https://trmnl-spotify-stats.onrender.com/api/spotify-stats" -H "x-spotify-client-id: USE_YOUR_CLIENT_ID" -H "x-spotify-client-secret: USE_YOUR_CLIENT_SECRET" -H "x-spotify-refresh-token: USE_YOUR_REFRESHTOKEN" -H "time_range:medium_term"
+```
+
 ## Troubleshooting
 
 ### "invalid_client" Error
