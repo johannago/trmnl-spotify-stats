@@ -1,0 +1,39 @@
+# TRMNL Spotify Stats Plugin Configuration
+# Copy and paste this into your TRMNL Private Plugin's "Custom Fields" section
+
+- keyname: spotify_client_id
+  field_type: string
+  name: Spotify Client ID
+  description: Find this in your Spotify Developer Dashboard (Settings)
+
+- keyname: spotify_client_secret
+  field_type: password
+  name: Spotify Client Secret
+  description: Your app's client secret from Spotify Dashboard
+
+- keyname: spotify_refresh_token
+  field_type: password
+  name: Spotify Refresh Token
+  description: Generated from the get-refresh-token.js script
+
+- keyname: time_range
+  field_type: select
+  name: Time Range
+  description: Statistics time period
+  default: medium_term
+  options:
+    - label: Last 4 Weeks
+      value: short_term
+    - label: Last 6 Months
+      value: medium_term
+    - label: All Time
+      value: long_term
+
+# POLLING URL (replace YOUR-SERVER-URL with your actual deployment URL):
+# https://YOUR-SERVER-URL/api/spotify-stats
+
+# POLLING HEADERS (more secure - credentials sent in headers, not URL):
+# x-spotify-client-id={{ spotify_client_id }}
+# x-spotify-client-secret={{ spotify_client_secret }}
+# x-spotify-refresh-token={{ spotify_refresh_token }}
+# x-spotify-time-range={{ time_range }}
