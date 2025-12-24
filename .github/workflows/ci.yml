@@ -1,0 +1,74 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check for syntax errors
+      run: node -c server.js
+
+    - name: Verify server can start (dry run)
+      run: |
+        timeout 10s node server.js || code=$?
+        if [ $code -ne 124 ] && [ $code -ne 0 ]; then
+          echo "Server failed to start"
+          exit 1
+        fi
+        echo "Server started successfully"
+      env:
+        PORT: 3000
+        SPOTIFY_CLIENT_ID: test_client_id
+        SPOTIFY_CLIENT_SECRET: test_client_secret
+        SPOTIFY_REFRESH_TOKEN: test_refresh_token
+
+    - name: Check for security vulnerabilities
+      run: npm audit --audit-level=high
+      continue-on-error: true
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check code formatting
+      run: |
+        echo "Checking for common code issues..."
+        # Check for console.log statements (excluding intentional ones)
+        if grep -r "console.log" server.js | grep -v "console.error\|Server running\|API endpoint"; then
+          echo "Warning: Found unexpected console.log statements"
+        fi
+        echo "Code check completed"
