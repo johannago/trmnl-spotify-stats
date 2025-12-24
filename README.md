@@ -4,6 +4,8 @@ Display your Spotify listening statistics on your TRMNL e-ink display, including
 
 https://usetrmnl.com/recipes/164583
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z81L4M6Q)
+
 <img width="946" height="941" alt="image" src="https://github.com/user-attachments/assets/a452fedf-bcb7-4e5d-a13c-b374ef4178cd" />
 
 
@@ -92,6 +94,12 @@ This will:
 **Important:** Copy the refresh token and save it securely. You'll need it for the TRMNL configuration.
 
 Press `Ctrl+C` to stop the server once you have your token.
+
+#### 2.5 Verify that your credentials and refresh token are working
+I'm currently hosting it using the free version on Render, if you're self-hosting then update the url below:
+```
+curl -X GET "https://trmnl-spotify-stats.onrender.com/api/spotify-stats" -H "x-spotify-client-id: USE_YOUR_CLIENT_ID" -H "x-spotify-client-secret: USE_YOUR_CLIENT_SECRET" -H "x-spotify-refresh-token: USE_YOUR_REFRESHTOKEN" -H "time_range:medium_term"
+```
 
 ## Troubleshooting
 
